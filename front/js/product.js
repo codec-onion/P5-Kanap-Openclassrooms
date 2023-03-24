@@ -92,9 +92,6 @@ function addProductToCart () {
         }
         window.localStorage.removeItem("cart");
         window.localStorage.setItem("cart", JSON.stringify(cart));
-        
-        console.log(cart);
-        console.log(window.localStorage.getItem("cart"));
     });
 }
 
@@ -125,4 +122,11 @@ function confirmationMessage (productQuantity) {
     } else {
         confirmationText.innerText = "Vos produits ont été ajoutés au panier";
     }
+    setTimeout(clearConfirmationMessage, 4.0*1000);
+}
+
+//Permet l'effacement du message de confirmation d'ajout au panier au bout de 5 sec
+function clearConfirmationMessage () {
+    const confirmationTextAvailable = document.querySelector(".item__content > p");
+    confirmationTextAvailable.remove();
 }

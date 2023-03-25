@@ -12,7 +12,7 @@ fetch(`http://localhost:3000/api/products/`)
     totalPriceCalculate(products);
     totalQuantityCalculate();
     changeQuantity(products);
-    removeProduct(products)
+    removeProduct(products);
 });
 
 
@@ -116,31 +116,42 @@ function totalPriceCalculate (products) {
 
 //Modification nombre d'articles
 function changeQuantity (products) {
-    for (let element of cart) {
-        const quantityInput = document.querySelector(`article[data-id="${element.id}"][data-color="${element.color}"] .itemQuantity`);
-        quantityInput.addEventListener("change", function (e){
+    const quantityInput = document.querySelectorAll(`.itemQuantity`);
+    for (let input of quantityInput) {
+        input.addEventListener("change", function (e){
+            const article = input.closest("article.cart__item");
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+            const productCart = cart.find(el => el.id === id && el.color === color);
+
             let newQuantity = e.target.value;
 
             if (newQuantity >= 1) {
-                element.quantity = parseInt(newQuantity);
+                productCart.quantity = parseInt(newQuantity);
+
+                window.localStorage.removeItem("cart");
+                window.localStorage.setItem("cart", JSON.stringify(cart));
+
+                totalQuantityCalculate();
+                totalPriceCalculate(products);
             }
-
-            window.localStorage.removeItem("cart");
-            window.localStorage.setItem("cart", JSON.stringify(cart));
-
-            totalQuantityCalculate();
-            totalPriceCalculate(products);
         });
     }
 }
 
 //Sppression d'un article du panier
 function removeProduct (products) {
-    for (let i = cart.length - 1; i >= 0; i--) {
-        const removeInput = document.querySelector(`article[data-id="${cart[i].id}"][data-color="${cart[i].color}"] .deleteItem`);
-        const article = removeInput.closest("article");
-        removeInput.addEventListener("click", function () {
-            cart.splice(i,1);
+    const removeInput = document.querySelectorAll(`.deleteItem`);
+    for (let input of removeInput) {
+        input.addEventListener("click", function () {
+            const article = input.closest("article.cart__item");
+            const id = article.dataset.id;
+            const color = article.dataset.color;
+            const productCart = cart.find(el => el.id === id && el.color === color);
+            const productCartIndex = cart.indexOf(productCart);
+
+        
+            cart.splice(productCartIndex,1);
             article.remove();
 
             window.localStorage.removeItem("cart");

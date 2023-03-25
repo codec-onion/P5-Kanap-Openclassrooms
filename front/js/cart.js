@@ -11,6 +11,8 @@ fetch(`http://localhost:3000/api/products/`)
     generateElements(products);
     totalPriceCalculate(products);
     totalQuantityCalculate();
+    changeQuantity(products);
+    removeProduct(products)
 });
 
 
@@ -110,4 +112,42 @@ function totalPriceCalculate (products) {
     }
     const totalPriceText = document.querySelector("#totalPrice");
     totalPriceText.innerText = totalPrice;
+}
+
+//Modification nombre d'articles
+function changeQuantity (products) {
+    for (let element of cart) {
+        const quantityInput = document.querySelector(`article[data-id="${element.id}"][data-color="${element.color}"] .itemQuantity`);
+        quantityInput.addEventListener("change", function (e){
+            let newQuantity = e.target.value;
+
+            if (newQuantity >= 1) {
+                element.quantity = parseInt(newQuantity);
+            }
+
+            window.localStorage.removeItem("cart");
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+
+            totalQuantityCalculate();
+            totalPriceCalculate(products);
+        });
+    }
+}
+
+//Sppression d'un article du panier
+function removeProduct (products) {
+    for (let i = cart.length - 1; i >= 0; i--) {
+        const removeInput = document.querySelector(`article[data-id="${cart[i].id}"][data-color="${cart[i].color}"] .deleteItem`);
+        const article = removeInput.closest("article");
+        removeInput.addEventListener("click", function () {
+            cart.splice(i,1);
+            article.remove();
+
+            window.localStorage.removeItem("cart");
+            window.localStorage.setItem("cart", JSON.stringify(cart));
+
+            totalQuantityCalculate();
+            totalPriceCalculate(products);
+        });
+    }
 }

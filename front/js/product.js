@@ -109,10 +109,6 @@ function errorMessage (productColor, productQuantity) {
 
 //Message de confirmation d'ajout du ou des produits au panier
 function confirmationMessage (productQuantity) {
-    const confirmationTextAvailable = document.querySelector(".item__content > p");
-    if (confirmationTextAvailable) {
-        confirmationTextAvailable.remove();
-    }
     const itemContent = document.querySelector(".item__content");
     const confirmationText = document.createElement("p");
     confirmationText.setAttribute("style", "text-align: center");

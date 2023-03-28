@@ -13,6 +13,8 @@ fetch(`http://localhost:3000/api/products/`)
     totalQuantityCalculate();
     changeQuantity(products);
     removeProduct(products);
+    checkValidInputs();
+    sendOrder();
 });
 
 
@@ -162,3 +164,108 @@ function removeProduct (products) {
         });
     }
 }
+
+//Ciblage des différents inputs
+const firstNameInput = document.querySelector("#firstName");
+const lastNameInput = document.querySelector("#lastName");
+const addressInput = document.querySelector("#address");
+const cityInput = document.querySelector("#city");
+const emailInput = document.querySelector("#email");
+
+//Vérification des inputs grâce au regex et affichage du message d'erreur
+function checkValidInputs () {
+    const nameRegex = /^[A-Za-zÀÁÂÃÄÅàáâãäåÒÓÔÕÖòóôõöÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-\s]+$/;
+    const addressRegex = /^[\w\s,'-]+$/;
+    const cityRegex = /^[A-Za-z-]+$/;
+    const mailRegex = /^[^.][a-z0-9._-]+[^.]@[^-][a-z0-9-]+[^-]\.[a-z]{2,6}$/;
+
+    const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg");
+    firstNameInput.addEventListener("keyup", function () {
+        if (nameRegex.test(firstNameInput.value)) {
+            firstNameErrorMsg.innerText = "";
+        } else {
+            firstNameErrorMsg.innerText ="Prénom invalide. Le prénom ne peut contenir de caractères spéciaux sauf le tiret ou l'espace"
+        }
+    });
+    
+    const lastNameErrorMsg = document.querySelector("#lastNameErrorMsg");
+    lastNameInput.addEventListener("keyup", function () {
+        if (nameRegex.test(lastNameInput.value)) {
+            lastNameErrorMsg.innerText = "";
+        } else {
+            lastNameErrorMsg.innerText ="Nom invalide. Le nom ne peut contenir de caractères spéciaux sauf le tiret ou l'espace"
+        }
+    });
+
+    const addressErrorMsg = document.querySelector("#addressErrorMsg");
+    addressInput.addEventListener("keyup", function () {
+        if (addressRegex.test(addressInput.value)) {
+            addressErrorMsg.innerText = "";
+        } else {
+            addressErrorMsg.innerText ="Addresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents."
+        }
+    });
+
+    const cityErrorMsg = document.querySelector("#cityErrorMsg");
+    cityInput.addEventListener("keyup", function () {
+        if (cityRegex.test(cityInput.value)) {
+            cityErrorMsg.innerText = "";
+        } else {
+            cityErrorMsg.innerText ="Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents."
+        }
+    });
+
+    const emailErrorMsg = document.querySelector("#emailErrorMsg");
+    emailInput.addEventListener("keyup", function () {
+        if (mailRegex.test(emailInput.value)) {
+            emailErrorMsg.innerText = "";
+        } else {
+            emailErrorMsg.innerText ="Email incorrect. Exemple: ex-am_ple98@exa-mple.com"
+        }
+    });
+}
+
+//Envoie de la commande vers l'API
+function sendOrder () {
+    const sendButton = document.querySelector("#order");
+    sendButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        const productsId = [];
+        for (let element of cart) {
+            productsId.push(element.id);
+        }
+
+        fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: {
+                "contact": {
+                    "firstName": `${firstNameInput.value}`,
+                    "lastName": `${lastNameInput.value}`,
+                    "address": `${addressInput.value}`,
+                    "city": `${cityInput.value}`,
+                    "email": `${emailInput.value}`
+                },
+                "products": `${productsId}`
+            }
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(orderData) {
+            console.log(orderData);
+        })
+        .catch((error) => {
+            alert ("Problème avec fetch : " + error.message);
+        });
+    });
+}
+
+
+//Test des inputs
+// Jean Michel
+// Bedouin
+// 23 avenue du clown des chatelains
+// Pomme-Perdue
+// garou@rock.com

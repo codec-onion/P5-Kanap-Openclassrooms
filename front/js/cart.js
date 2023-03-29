@@ -239,28 +239,30 @@ function sendOrder () {
         fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: {
-                "contact": {
-                    "firstName": `${firstNameInput.value}`,
-                    "lastName": `${lastNameInput.value}`,
-                    "address": `${addressInput.value}`,
-                    "city": `${cityInput.value}`,
-                    "email": `${emailInput.value}`
+            body: JSON.stringify({
+                contact: {
+                    firstName: firstNameInput.value,
+                    lastName: lastNameInput.value,
+                    address: addressInput.value,
+                    city: cityInput.value,
+                    email: emailInput.value
                 },
-                "products": `${productsId}`
-            }
+                products: productsId
+            })
         })
         .then(function(response) {
             return response.json();
         })
         .then(function(orderData) {
-            console.log(orderData);
+            localStorage.clear();
+            location.assign(`./confirmation.html?orderid=${orderData.orderId}`);
         })
         .catch((error) => {
             alert ("Problème avec fetch : " + error.message);
         });
     });
 }
+
 
 
 //Test des inputs

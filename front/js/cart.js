@@ -184,7 +184,7 @@ function checkValidInputs () {
         if (nameRegex.test(firstNameInput.value)) {
             firstNameErrorMsg.innerText = "";
         } else {
-            firstNameErrorMsg.innerText ="Prénom invalide. Le prénom ne peut contenir de caractères spéciaux sauf le tiret ou l'espace"
+            firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace."
         }
     });
     
@@ -193,7 +193,7 @@ function checkValidInputs () {
         if (nameRegex.test(lastNameInput.value)) {
             lastNameErrorMsg.innerText = "";
         } else {
-            lastNameErrorMsg.innerText ="Nom invalide. Le nom ne peut contenir de caractères spéciaux sauf le tiret ou l'espace"
+            lastNameErrorMsg.innerText = "Nom invalide. Le nom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
         }
     });
 
@@ -202,7 +202,7 @@ function checkValidInputs () {
         if (addressRegex.test(addressInput.value)) {
             addressErrorMsg.innerText = "";
         } else {
-            addressErrorMsg.innerText ="Addresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents."
+            addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union."
         }
     });
 
@@ -211,7 +211,7 @@ function checkValidInputs () {
         if (cityRegex.test(cityInput.value)) {
             cityErrorMsg.innerText = "";
         } else {
-            cityErrorMsg.innerText ="Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents."
+            cityErrorMsg.innerText = "Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. Le nom de la ville ne peut contenir de chiffres ou de caractères spéciaux autre que le trait d'union.";
         }
     });
 
@@ -220,7 +220,7 @@ function checkValidInputs () {
         if (mailRegex.test(emailInput.value)) {
             emailErrorMsg.innerText = "";
         } else {
-            emailErrorMsg.innerText ="Email incorrect. Exemple: ex-am_ple98@exa-mple.com"
+            emailErrorMsg.innerText = "Email incorrect. Exemple: ex-am_ple98@exa-mple.com";
         }
     });
 }

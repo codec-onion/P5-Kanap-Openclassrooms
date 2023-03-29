@@ -184,7 +184,7 @@ function checkValidInputs () {
         if (nameRegex.test(firstNameInput.value)) {
             firstNameErrorMsg.innerText = "";
         } else {
-            firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace."
+            firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
         }
     });
     
@@ -202,7 +202,7 @@ function checkValidInputs () {
         if (addressRegex.test(addressInput.value)) {
             addressErrorMsg.innerText = "";
         } else {
-            addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union."
+            addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union.";
         }
     });
 

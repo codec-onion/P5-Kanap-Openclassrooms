@@ -111,7 +111,7 @@ function errorMessage (productColor, productQuantity) {
 function confirmationMessage (productQuantity) {
     const itemContent = document.querySelector(".item__content");
     const confirmationText = document.createElement("p");
-    confirmationText.setAttribute("style", "text-align: center");
+    confirmationText.setAttribute("style", "text-align: center; color: lightgreen; font-weight: bold");
     itemContent.appendChild(confirmationText);
     if (productQuantity === 1) {
         confirmationText.innerText = "Votre produit a été ajouté au panier";

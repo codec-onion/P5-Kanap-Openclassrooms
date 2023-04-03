@@ -98,11 +98,11 @@ function addProductToCart () {
 
 //Message d'erreur si pas de couleur ou de quantité sélectionnée ou les deux manquants
 function errorMessage (productColor, productQuantity) {
-    if ((productColor.split("")).length === 0 && productQuantity != 0) {
+    if ((productColor.split("")).length === 0 && productQuantity > 0) {
         alert("Veuillez indiquer une couleur pour l'ajout au panier")
-    }else if (productQuantity === 0 && (productColor.split("")).length != 0) {
+    }else if (productQuantity <= 0 && (productColor.split("")).length != 0) {
         alert("Veuillez indiquer une quantité de produit supérieur à 0 pour l'ajout au panier")
-    } else if ((productColor.split("")).length === 0 && productQuantity === 0) {
+    } else if ((productColor.split("")).length === 0 && productQuantity <= 0) {
         alert("Veuillez indiquer une couleur et une quantité de produit supérieur à 0 pour l'ajout au panier")
     }
 }

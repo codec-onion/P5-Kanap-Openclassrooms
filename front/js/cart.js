@@ -1,7 +1,12 @@
-//Récupération et désérialisation du panier dans le localStorage
+//Récupération et désérialisation du panier dans le localStorage ou création si inexistant
 const cartStorage = window.localStorage.getItem("cart");
-const cart = JSON.parse(cartStorage);
-
+let cart;
+if (cartStorage === null) {
+    cart = [];
+    window.localStorage.setItem("cart", JSON.stringify(cart));
+} else {
+    cart = JSON.parse(cartStorage);
+}
 
 fetch(`http://localhost:3000/api/products/`)
 .then(function(response) {
@@ -258,7 +263,7 @@ function sendOrder () {
     sendButton.addEventListener("click", function (event) {
         event.preventDefault();
 
-        if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail) {
+        if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail && cart.length >= 1) {
             const productsId = [];
             for (let element of cart) {
                 productsId.push(element.id);

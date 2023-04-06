@@ -9,6 +9,14 @@ fetch(`http://localhost:3000/api/products/${productId}`)
     .then(function(product) {
         generateElement(product);
         addProductToCart();
+    })
+    .catch((error) => {
+        console.log(error.message);
+        const errorMsgContainer = document.querySelector(".item__img");
+        const errorMsg = document.createElement("h2");
+        errorMsg.setAttribute("style", "color: #faa99d; font-weight: bold;");
+        errorMsg.innerText = "Désolé, une erreur s'est produite. Impossible d'afficher le produit.";
+        errorMsgContainer.appendChild(errorMsg);
 });
 
 //Création de la fiche produit

@@ -15,6 +15,14 @@ fetch(`http://localhost:3000/api/products/`)
     removeProduct(products);
     checkValidInputs();
     sendOrder();
+    })
+    .catch((error) => {
+        console.log(error.message);
+        const errorMsgContainer = document.querySelector("#cart__items");
+        const errorMsg = document.createElement("h2");
+        errorMsg.setAttribute("style", "color: #faa99d; font-weight: bold;");
+        errorMsg.innerText = "Désolé, une erreur s'est produite. Impossible d'afficher le panier.";
+        errorMsgContainer.appendChild(errorMsg);
 });
 
 
@@ -172,19 +180,30 @@ const addressInput = document.querySelector("#address");
 const cityInput = document.querySelector("#city");
 const emailInput = document.querySelector("#email");
 
-//Vérification des inputs grâce au regex et affichage du message d'erreur
+//Variables de validation pour le formulaire
+let isValidFirstName;
+let isValidLastName;
+let isValidAddress;
+let isValidCity;
+let isValidEmail;
+
+//Vérification des inputs grâce au regex, affichage d'un message
 function checkValidInputs () {
-    const nameRegex = /^[A-Za-zÀÁÂÃÄÅàáâãäåÒÓÔÕÖòóôõöÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-\s]+$/;
-    const addressRegex = /^[\w\s,'-]+$/;
-    const cityRegex = /^[A-Za-z-]+$/;
-    const mailRegex = /^[^.][a-z0-9._-]+[^.]@[^-][a-z0-9-]+[^-]\.[a-z]{2,6}$/;
+    const nameRegex = /^[A-Za-zÀÁÂÃÄÅàáâãäåÒÓÔÕÖòóôõöÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-\s]{3,}$/;
+    const addressRegex = /^[\w\s,'-]{6,}$/;
+    const cityRegex = /^[A-Za-z-]{2,}$/;
+    const mailRegex = /^[^.][a-z0-9._-]{2,}[^.]@[^-][a-z0-9-]{2,}[^-]\.[a-z]{2,6}$/;
+
+    
 
     const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg");
     firstNameInput.addEventListener("keyup", function () {
         if (nameRegex.test(firstNameInput.value)) {
             firstNameErrorMsg.innerText = "";
+            isValidFirstName = true;
         } else {
             firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
+            isValidFirstName = false;
         }
     });
     
@@ -192,8 +211,10 @@ function checkValidInputs () {
     lastNameInput.addEventListener("keyup", function () {
         if (nameRegex.test(lastNameInput.value)) {
             lastNameErrorMsg.innerText = "";
+            isValidLastName = true;
         } else {
             lastNameErrorMsg.innerText = "Nom invalide. Le nom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
+            isValidLastName = false;
         }
     });
 
@@ -201,8 +222,10 @@ function checkValidInputs () {
     addressInput.addEventListener("keyup", function () {
         if (addressRegex.test(addressInput.value)) {
             addressErrorMsg.innerText = "";
+            isValidAddress = true;
         } else {
             addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union.";
+            isValidAddress = false;
         }
     });
 
@@ -210,8 +233,10 @@ function checkValidInputs () {
     cityInput.addEventListener("keyup", function () {
         if (cityRegex.test(cityInput.value)) {
             cityErrorMsg.innerText = "";
+            isValidCity = true;
         } else {
             cityErrorMsg.innerText = "Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. Le nom de la ville ne peut contenir de chiffres ou de caractères spéciaux autre que le trait d'union.";
+            isValidCity = false;
         }
     });
 
@@ -219,8 +244,10 @@ function checkValidInputs () {
     emailInput.addEventListener("keyup", function () {
         if (mailRegex.test(emailInput.value)) {
             emailErrorMsg.innerText = "";
+            isValidEmail = true;
         } else {
             emailErrorMsg.innerText = "Email incorrect. Exemple: ex-am_ple98@exa-mple.com";
+            isValidEmail = false;
         }
     });
 }
@@ -231,35 +258,37 @@ function sendOrder () {
     sendButton.addEventListener("click", function (event) {
         event.preventDefault();
 
-        const productsId = [];
-        for (let element of cart) {
-            productsId.push(element.id);
-        }
+        if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail) {
+            const productsId = [];
+            for (let element of cart) {
+                productsId.push(element.id);
+            }
 
-        fetch("http://localhost:3000/api/products/order", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contact: {
-                    firstName: firstNameInput.value,
-                    lastName: lastNameInput.value,
-                    address: addressInput.value,
-                    city: cityInput.value,
-                    email: emailInput.value
-                },
-                products: productsId
+            fetch("http://localhost:3000/api/products/order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contact: {
+                        firstName: firstNameInput.value,
+                        lastName: lastNameInput.value,
+                        address: addressInput.value,
+                        city: cityInput.value,
+                        email: emailInput.value
+                    },
+                    products: productsId
+                })
             })
-        })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(orderData) {
-            localStorage.clear();
-            location.assign(`./confirmation.html?orderid=${orderData.orderId}`);
-        })
-        .catch((error) => {
-            alert ("Problème avec fetch : " + error.message);
-        });
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(orderData) {
+                localStorage.clear();
+                location.assign(`./confirmation.html?orderid=${orderData.orderId}`);
+            })
+            .catch((error) => {
+                alert("Problème d'envoie du formulaire : " + error.message);
+            });
+        }
     });
 }
 

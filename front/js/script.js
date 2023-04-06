@@ -5,7 +5,15 @@ fetch('http://localhost:3000/api/products')
     })
     .then(function(products) {
         generateElements(products);
-});
+    })
+    .catch((error) => {
+        console.log(error.message);
+        const errorMsgContainer = document.querySelector("#items");
+        const errorMsg = document.createElement("h2");
+        errorMsg.setAttribute("style", "color: #faa99d; font-weight: bold;");
+        errorMsg.innerText = "Désolé, une erreur s'est produite. Les produits n'ont pas pu être affichés car le serveur n'est pas accesible.";
+        errorMsgContainer.appendChild(errorMsg);
+    });
 
 //Création des fiches de produit
 function generateElements (productsArray) {

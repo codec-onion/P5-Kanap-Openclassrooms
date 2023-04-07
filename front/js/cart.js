@@ -192,7 +192,7 @@ let isValidAddress;
 let isValidCity;
 let isValidEmail;
 
-//Vérification des inputs grâce au regex, affichage d'un message
+//Vérification des inputs grâce au regex, affichage d'un message en cas d'invalidité
 function checkValidInputs () {
     const nameRegex = /^[A-Za-zÀÁÂÃÄÅàáâãäåÒÓÔÕÖòóôõöÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ-\s]{3,}$/;
     const addressRegex = /^[\w\s,'-]{6,}$/;
@@ -297,11 +297,3 @@ function sendOrder () {
     });
 }
 
-
-
-//Test des inputs
-// Jean Michel
-// Bedouin
-// 23 avenue du clown des chatelains
-// Pomme-Perdue
-// garou@rock.com

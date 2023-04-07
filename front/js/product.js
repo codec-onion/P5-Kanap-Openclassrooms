@@ -126,7 +126,7 @@ function confirmationMessage (productQuantity) {
     } else {
         confirmationText.innerText = "Vos produits ont été ajoutés au panier";
     }
-    setTimeout(clearConfirmationMessage, 4.0*1000);
+    setTimeout(clearConfirmationMessage, 5.0*1000);
 }
 
 //Permet l'effacement du message de confirmation d'ajout au panier au bout de 5 sec

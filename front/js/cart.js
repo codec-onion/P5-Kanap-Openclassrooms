@@ -18,7 +18,6 @@ fetch(`http://localhost:3000/api/products/`)
     totalQuantityCalculate();
     changeQuantity(products);
     removeProduct(products);
-    checkValidInputs();
     sendOrder();
     })
     .catch((error) => {
@@ -202,59 +201,49 @@ function checkValidInputs () {
     
 
     const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg");
-    firstNameInput.addEventListener("keyup", function () {
-        if (nameRegex.test(firstNameInput.value)) {
-            firstNameErrorMsg.innerText = "";
-            isValidFirstName = true;
-        } else {
-            firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
-            isValidFirstName = false;
-        }
-    });
+    if (nameRegex.test(firstNameInput.value)) {
+        firstNameErrorMsg.innerText = "";
+        isValidFirstName = true;
+    } else {
+        firstNameErrorMsg.innerText = "Prénom invalide. Le prénom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
+        isValidFirstName = false;
+    }
     
     const lastNameErrorMsg = document.querySelector("#lastNameErrorMsg");
-    lastNameInput.addEventListener("keyup", function () {
-        if (nameRegex.test(lastNameInput.value)) {
-            lastNameErrorMsg.innerText = "";
-            isValidLastName = true;
-        } else {
-            lastNameErrorMsg.innerText = "Nom invalide. Le nom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
-            isValidLastName = false;
-        }
-    });
+    if (nameRegex.test(lastNameInput.value)) {
+        lastNameErrorMsg.innerText = "";
+        isValidLastName = true;
+    } else {
+        lastNameErrorMsg.innerText = "Nom invalide. Le nom ne peut contenir de chiffres ou de caractères spéciaux sauf le trait d'union ou l'espace.";
+        isValidLastName = false;
+    }
 
     const addressErrorMsg = document.querySelector("#addressErrorMsg");
-    addressInput.addEventListener("keyup", function () {
-        if (addressRegex.test(addressInput.value)) {
-            addressErrorMsg.innerText = "";
-            isValidAddress = true;
-        } else {
-            addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union.";
-            isValidAddress = false;
-        }
-    });
+    if (addressRegex.test(addressInput.value)) {
+        addressErrorMsg.innerText = "";
+        isValidAddress = true;
+    } else {
+        addressErrorMsg.innerText = "Adresse invalide. Si votre adresse contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. L'adresse ne peut contenir de caractères spéciaux autre que l'espace, la virgule, l'apostrophe ou le trait d'union.";
+        isValidAddress = false;
+    }
 
     const cityErrorMsg = document.querySelector("#cityErrorMsg");
-    cityInput.addEventListener("keyup", function () {
-        if (cityRegex.test(cityInput.value)) {
-            cityErrorMsg.innerText = "";
-            isValidCity = true;
-        } else {
-            cityErrorMsg.innerText = "Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. Le nom de la ville ne peut contenir de chiffres ou de caractères spéciaux autre que le trait d'union.";
-            isValidCity = false;
-        }
-    });
+    if (cityRegex.test(cityInput.value)) {
+        cityErrorMsg.innerText = "";
+        isValidCity = true;
+    } else {
+        cityErrorMsg.innerText = "Nom de ville invalide. Si le nom de votre ville contient des lettres accentuées, vous pouvez remplacer par les mêmes lettres sans accents. Le nom de la ville ne peut contenir de chiffres ou de caractères spéciaux autre que le trait d'union.";
+        isValidCity = false;
+    }
 
     const emailErrorMsg = document.querySelector("#emailErrorMsg");
-    emailInput.addEventListener("keyup", function () {
-        if (mailRegex.test(emailInput.value)) {
-            emailErrorMsg.innerText = "";
-            isValidEmail = true;
-        } else {
-            emailErrorMsg.innerText = "Email incorrect. Exemple: ex-am_ple98@exa-mple.com";
-            isValidEmail = false;
-        }
-    });
+    if (mailRegex.test(emailInput.value)) {
+        emailErrorMsg.innerText = "";
+        isValidEmail = true;
+    } else {
+        emailErrorMsg.innerText = "Email incorrect. Exemple: ex-am_ple98@exa-mple.com";
+        isValidEmail = false;
+    }
 }
 
 //Envoie de la commande vers l'API
@@ -262,6 +251,8 @@ function sendOrder () {
     const sendButton = document.querySelector("#order");
     sendButton.addEventListener("click", function (event) {
         event.preventDefault();
+        
+        checkValidInputs();
 
         if (isValidFirstName && isValidLastName && isValidAddress && isValidCity && isValidEmail && cart.length >= 1) {
             const productsId = [];
